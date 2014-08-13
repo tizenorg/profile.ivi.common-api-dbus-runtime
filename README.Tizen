@@ -1,0 +1,21 @@
+README.Tizen
+
+The DBus patch needed by CommonAPI-DBus is not applied in Tizen DBus.
+Therefore, a local build is needed to enable full CommonAPI-DBus
+functionality.
+
+# STEPS
+
+1. git clone dbus, common-api-runtime, and common-api-dbus-runtime in the same
+   directory (e.g., 'franca/')
+2. Apply dbus-DBusMessage-add-support-for-custom-marshaling.patch to dbus
+3. run gbs build with
+   '--include-all --define "_with_dbus_patch_enabled 1" franca/', e.g.,
+
+   gbs build -A i586 -R \
+   http://download.tizen.org/releases/daily/tizen/ivi/latest/repos/atom/packages/ \
+   --skip-conf-repos --include-all --define "_with_dbus_patch_enabled 1" franca/
+
+   (it builds dbus, common-api-runtime, and common-api-dbus-runtime in one go)
+
+4. Install the libraries in the image.

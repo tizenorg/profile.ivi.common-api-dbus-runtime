@@ -100,8 +100,12 @@ DBusMessage DBusMessage::createMethodCall(const char* busName,
                                                                      methodName);
     assert(libdbusMessageCall);
 
+#ifdef DBUS_PATCH_ENABLED
     if (signature)
         dbus_message_set_signature(libdbusMessageCall, signature);
+#else
+    (void)signature;
+#endif
 
     const bool increaseLibdbusMessageReferenceCount = false;
     return DBusMessage(libdbusMessageCall, increaseLibdbusMessageReferenceCount);
@@ -128,8 +132,12 @@ DBusMessage DBusMessage::createMethodReturn(const char* signature) const {
     ::DBusMessage* libdbusMessageReturn = dbus_message_new_method_return(libdbusMessage_);
     assert(libdbusMessageReturn);
 
+#ifdef DBUS_PATCH_ENABLED
     if (signature)
         dbus_message_set_signature(libdbusMessageReturn, signature);
+#else
+    (void)signature;
+#endif
 
     const bool increaseLibdbusMessageReferenceCount = false;
     return DBusMessage(libdbusMessageReturn, increaseLibdbusMessageReferenceCount);
@@ -160,8 +168,12 @@ DBusMessage DBusMessage::createSignal(const char* objectPath,
                                                                   signalName);
     assert(libdbusMessageSignal);
 
+#ifdef DBUS_PATCH_ENABLED
     if (signature)
         dbus_message_set_signature(libdbusMessageSignal, signature);
+#else
+    (void)signature;
+#endif
 
     const bool increaseLibdbusMessageReferenceCount = false;
     return DBusMessage(libdbusMessageSignal, increaseLibdbusMessageReferenceCount);
@@ -253,19 +265,35 @@ const DBusMessage::Type DBusMessage::getType() const {
 }
 
 char* DBusMessage::getBodyData() const {
+#ifdef DBUS_PATCH_ENABLED
     return dbus_message_get_body(libdbusMessage_);
+#else
+    return NULL;
+#endif
 }
 
 int DBusMessage::getBodyLength() const {
+#ifdef DBUS_PATCH_ENABLED
     return dbus_message_get_body_length(libdbusMessage_);
+#else
+    return 0;
+#endif
 }
 
 int DBusMessage::getBodySize() const {
+#ifdef DBUS_PATCH_ENABLED
     return dbus_message_get_body_allocated(libdbusMessage_);
+#else
+    return 0;
+#endif
 }
 
 bool DBusMessage::setBodyLength(const int bodyLength) {
+#ifdef DBUS_PATCH_ENABLED
     return dbus_message_set_body_length(libdbusMessage_, bodyLength);
+#else
+    return 0;
+#endif
 }
 
 bool DBusMessage::setDestination(const char* destination)
