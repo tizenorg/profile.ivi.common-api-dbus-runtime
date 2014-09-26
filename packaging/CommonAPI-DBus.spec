@@ -7,6 +7,7 @@ Release:    0
 Group:      Automotive/GENIVI
 License:    MPL-2.0
 Source0:    %{name}-%{version}.tar.gz
+BuildRequires: pkgconfig
 BuildRequires: pkgconfig(CommonAPI)
 BuildRequires: pkgconfig(dbus-1)
 BuildRequires: pkgconfig(glib-2.0)
@@ -36,10 +37,10 @@ Files needed to build against CommonAPI.
 autoreconf -i
 %configure \
 %if %{with dbus_patch_enabled}
-	CXXFLAGS=-DDBUS_PATCH_ENABLED
+    CXXFLAGS=-DDBUS_PATCH_ENABLED
 %endif
 
-make %{?jobs:-j%jobs}
+%__make %{?_smp_mflags}
 
 %install
 %make_install
